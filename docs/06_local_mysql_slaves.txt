@@ -1,0 +1,56 @@
+* assuming port install mysql5 with no bin-logging yet
+
+echo "GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'repl'@'%' IDENTIFIED BY 'blaat' | mysql
+mkdir /opt/local/var/db/mysql5_3307
+chown mysql:mysql /opt/local/var/db/mysql5_3307
+rsync -av /opt/local/var/db/mysql5/ /opt/local/var/db/mysql5_3307/
+mkdir /opt/local/var/db/mysql5_3308
+chown mysql:mysql /opt/local/var/db/mysql5_3308
+rsync -av /opt/local/var/db/mysql5/ /opt/local/var/db/mysql5_3308/
+
+cat > /opt/local/etc/mysql5/my.cnf <<END
+[mysqld]
+log-bin
+server-id = 1
+END
+
+cat > /opt/local/etc/mysql5/my_3307.cnf <<END
+[mysqld]
+server-id = 2
+master-host = 127.0.0.1
+master-user = repl
+master-password = blaat
+master-port = 3306
+port = 3307
+socket = /opt/local/var/run/mysql5/mysqld_3307.sock
+pid-file = /opt/local/var/db/mysql5_3307/my.3307.pid
+datadir = /opt/local/var/db/mysql5_3307
+log-error = /opt/local/var/db/mysql5_3307/my.error.log
+END
+
+cat > /opt/local/etc/mysql5/my_3308.cnf <<END
+[mysqld]
+server-id = 3
+master-host = 127.0.0.1
+master-user = repl
+master-password = blaat
+master-port = 3306
+port = 3308
+socket = /opt/local/var/run/mysql5/mysqld_3308.sock
+pid-file = /opt/local/var/db/mysql5_3308/my.3308.pid
+datadir = /opt/local/var/db/mysql5_3308
+log-error = /opt/local/var/db/mysql5_3308/my.error.log
+END
+
+
+* stop master
+* if you did have bin-logging already
+  rm *-bin*
+* start master
+* start slaves:
+
+  mysqld_safe --defaults-file=/opt/local/etc/mysql5/my_3307.cnf
+
+* inspect
+  /opt/local/var/db/mysql5_3307/my.error.log
+  /opt/local/var/db/mysql5_3308/my.error.log

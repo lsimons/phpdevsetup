@@ -1,0 +1,11 @@
+#!/usr/bin/env perl
+
+BEGIN { eval { require blib && blib->import; } }
+
+use strict;
+use warnings FATAL => 'all';
+
+use lib qw(
+);
+
+use Apache::TestRunPHP ();Apache::TestRunPHP->new->run(@ARGV);

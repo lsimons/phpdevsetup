@@ -1,0 +1,32 @@
+{
+    "memcache_servers" : {
+        "aa" : {
+            "host"  : "127.0.0.1",
+            "port"  : 11211
+        },
+        "ab" : {
+            "host"  : "127.0.0.1",
+            "port"  : 11212
+        }
+    },
+    "mysql_servers" : {
+        "test" : {
+            "username" : "test",
+            "password" : "test",
+            "servers"  : {
+                "master" : {
+                    "host"  : "127.0.0.1",
+                    "port"  : 3306
+                },
+                "slave_aa" : {
+                    "host"  : "127.0.0.1",
+                    "port"  : 3307
+                },
+                "slave_ab" : {
+                    "host"  : "127.0.0.1",
+                    "port"  : 3308
+                }
+            }
+        }
+    }
+}

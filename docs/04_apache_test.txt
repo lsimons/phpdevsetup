@@ -1,0 +1,41 @@
+1) install apache-test
+
+    sudo port install p5-apache-test
+
+2) install HTTP_Request pear library
+
+    sudo pear install HTTP_Request
+
+3) change Apache-Test to not override the php extension_dir
+   (otherwise it won't find memcache :/)
+
+    cd path/to/perl/lib
+    patch -p0 <<END
+--- TestConfigPHP.pm.orig       2008-05-01 15:30:34.000000000 +0200
++++ TestConfigPHP.pm    2008-05-01 15:31:01.000000000 +0200
+@@ -285,7 +285,7 @@
+ default_mimetype = "text/html"
+ doc_root =
+ user_dir =
+-extension_dir = "./"
++#extension_dir = "./"
+ enable_dl = On
+ file_uploads = On
+ upload_max_filesize = 2M
+END
+
+3) run the tests
+
+    ./test.sh
+
+4) writing server-side tests
+
+    create files
+    
+        t/response/Test${SUITE}/${NAME}.php
+
+5) client-side tests
+
+    create files
+    
+        t/${NAME}.php

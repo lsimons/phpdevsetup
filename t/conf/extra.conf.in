@@ -1,0 +1,8 @@
+AddType application/x-httpd-php .php
+AddType application/x-httpd-php-source .phps
+DirectoryIndex index.php index.html
+
+<Files ~ "\.inc">
+    Order allow,deny
+    Deny from all
+</Files>

@@ -1,0 +1,48 @@
+1) install memcached
+
+  sudo port install memcached
+
+2) run memcached
+
+  bin/start_memcached.sh
+
+3) install memcache support for php
+
+  port install php5-memcache
+  
+  follow the instructions given, ie:
+  ***************************************************************************
+  * To enable the memcache extension in php, add or edit the following      *
+  * lines in /opt/local/etc/php.ini:                                         *
+  *                                                                         *
+  * extension_dir=/opt/local/lib/php/extensions/no-debug-non-zts-20060613    *
+  * extension = memcache.so                                                 *
+  ***************************************************************************
+  
+4) customize to use memcache for sessions, edit php.ini some more
+
+  session.save_handler = "memcache"
+  session.save_path = "tcp://127.0.0.1:11211, tcp://127.0.0.1:11212"
+
+5) restart apache
+
+6) try it:
+
+    <?php
+
+    session_start();
+    echo "test variable from session: " . $_SESSION["test"];
+    $_SESSION["test"] = "Time of previous visit: " . microtime();
+
+    phpinfo();
+
+    ?>
+
+this is officially a bad idea. See, for example,
+
+    http://www.eu.socialtext.net/memcached/index.cgi?sessions
+
+One project implementing sessions on both db and memcached is drupal, see
+
+    http://drupal.org/project/memcache
+    http://cvs.drupal.org/viewvc.py/drupal/contributions/modules/memcache/memcache.db.inc?view=markup

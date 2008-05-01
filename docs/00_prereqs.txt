@@ -1,0 +1,4 @@
+* darwinports
+* port install apache2
+* port install perl5.8
+* port install mysql

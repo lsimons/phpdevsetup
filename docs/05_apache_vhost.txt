@@ -1,0 +1,16 @@
+Enable virtual hosting in apache, and then do something like
+
+    Listen 8810
+    NameVirtualHost *:8810
+    <VirtualHost *:8810>
+        ServerName localhost:8810
+        DocumentRoot /data/dev/doodle/htdocs
+        <Directory "/data/dev/doodle/htdocs">
+          Options Indexes FollowSymLinks
+          AllowOverride None
+          Order allow,deny
+          Allow from all
+        </Directory>
+    </VirtualHost>
+
+then restart apache
